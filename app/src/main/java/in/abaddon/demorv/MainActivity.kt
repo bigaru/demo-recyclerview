@@ -2,7 +2,6 @@ package `in`.abaddon.demorv
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerview)
         recyclerView.apply {
             adapter = todoAdapter
-            layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
         }
     }
