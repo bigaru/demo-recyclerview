@@ -1,8 +1,12 @@
 package `in`.abaddon.demorv
 
-import java.util.*
+import java.util.Date
+import java.util.Calendar
+import java.util.UUID
+import kotlin.random.Random
 
-data class Todo(val id: UUID, val description: String, val isDone: Boolean, val dueDate: Date) {
+enum class TodoType(val value: Int) { Work(0), Home(1), Hobby(2) }
+data class Todo(val id: UUID, val description: String, val isDone: Boolean, val dueDate: Date, val type: TodoType ) {
     companion object{
         var counter = 0
 
@@ -12,11 +16,19 @@ data class Todo(val id: UUID, val description: String, val isDone: Boolean, val 
             c.setTime(d)
             c.add(Calendar.DAY_OF_MONTH, 5)
 
+            val type = when(Random.nextInt(1,4)){
+                1 -> TodoType.Work
+                2 -> TodoType.Home
+                3 -> TodoType.Hobby
+                else -> TodoType.Home
+            }
+
             return Todo(
                 UUID.randomUUID(),
                 "Task ${counter++}",
                 false,
-                c.time
+                c.time,
+                type
             )
         }
     }

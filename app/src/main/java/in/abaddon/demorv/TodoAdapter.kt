@@ -31,8 +31,18 @@ data class TodoVH(
 }
 
 class TodoAdapter(val data: List<Todo>, val onItemClick: OnItemClick): RecyclerView.Adapter<TodoVH>() {
+    override fun getItemViewType(position: Int): Int {
+        return data[position].type.value
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoVH {
-        val rootView = LayoutInflater.from(parent.context).inflate(R.layout.row_default, parent, false)
+        val layout = when(viewType) {
+            TodoType.Work.value -> R.layout.row_work
+            TodoType.Home.value -> R.layout.row_home
+            else -> R.layout.row_hobby
+        }
+
+        val rootView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return TodoVH(rootView, onItemClick)
     }
 
