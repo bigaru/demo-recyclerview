@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 const val LOAD_TYPE = -1
@@ -70,7 +71,10 @@ class TodoAdapter(var data: List<Item>): RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     fun updateData(newData: List<Item>){
+        val diffCallback = TodoDiffCallback(data, newData)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         data = newData
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 }
