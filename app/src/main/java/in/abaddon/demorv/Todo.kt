@@ -5,8 +5,11 @@ import java.util.Calendar
 import java.util.UUID
 import kotlin.random.Random
 
+sealed class Item
+object LoadItem: Item()
+
 enum class TodoType(val value: Int) { Work(0), Home(1), Hobby(2) }
-data class Todo(val id: UUID, val description: String, val isDone: Boolean, val dueDate: Date, val type: TodoType ) {
+data class Todo(val id: UUID, val description: String, val isDone: Boolean, val dueDate: Date, val type: TodoType ): Item() {
     companion object{
         var counter = 0
 
@@ -47,7 +50,7 @@ class DefaultTodoRepo: TodoRepository {
 
     override fun getOne(id: UUID): Todo? = items.find { it.id == id }
 
-    override fun getMany(beginAt: Int, count: Int): List<Todo> = items.slice(beginAt until count)
+    override fun getMany(beginAt: Int, count: Int): List<Todo> = items.drop(beginAt).take(count)
 
     override fun insert(item: Todo): Boolean = items.add(item)
 
