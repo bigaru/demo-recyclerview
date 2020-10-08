@@ -3,12 +3,13 @@ package `in`.abaddon.demorv
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class InfiniteScrollListener(
-    val hasMoreItems: (currentSize: Int)->Boolean,
-    val loadMoreItems: (currentSize: Int)->Unit
-): RecyclerView.OnScrollListener(){
-    var isLoading = false
+interface LoadMoreListener{
+    fun loadMore(currentSize: Int)
+}
 
+class InfiniteScrollListener(
+    val loadMoreListener: LoadMoreListener
+): RecyclerView.OnScrollListener(){
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
@@ -20,10 +21,6 @@ class InfiniteScrollListener(
         }
 
         val currentSize = layoutManager.itemCount
-
-        if(!isLoading && hasMoreItems(currentSize)){
-            isLoading = true
-            loadMoreItems(currentSize)
-        }
+        loadMoreListener.loadMore(currentSize)
     }
 }
